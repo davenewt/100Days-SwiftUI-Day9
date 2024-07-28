@@ -3,35 +3,37 @@ import Cocoa
 // Day 9, Checkpoint 5 – using closures!
 // Take out even numbers... sort in ascending order... map to strings in the format "7 is a lucky number" ... print the resulting array one item per line.
 
-let luckyNumbers = [7,4,38,21,16,15,12,33,31,49]
-//
-// Stuck! How do I tell the first enclosure to accept an Array of [Int]?
-// (I've managed to tell it to return an [Int], I think!?)
-// If I put "_ inputNumbers: [Int]" inside the first parentheses, Swift complains elsewhere and I don't understand the error.
-//
-// Also, why is "first" not mentioned specifically in the doStuff {} closure itself below? This makes no sense to me.
-//
-func doStuff(first: () -> [Int], second: () -> Void, third: () -> Void) {
-    print("Filtering numbers...")
-    first()
-    print("Sorting...")
-    second()
-    print("Creating strings...")
-    third()
-    print("Done. Result:")
-}
-doStuff {
-    var filteredNumbers = [Int]()
-    for x in 1..<luckyNumbers.count {
-        if !luckyNumbers[x].isMultiple(of: 2) {
-            // add it to our output array
-            filteredNumbers.append(luckyNumbers[x])
-        }
+// Example from Paul's videos:
+func getUserData(for id: Int) -> String {
+    if id == 1989 {
+        return "Taylor Swift"
+    } else {
+        return "Who Knows?"
     }
-    print(filteredNumbers) // OK so at least this bit's working
-    return filteredNumbers
-} second: {
+}
+let data = getUserData
+let user = data(1989)
+// print (user)
 
-} third: {
+// Getting help on the forum because I really didn't understand at first! https://www.hackingwithswift.com/forums/100-days-of-swiftui/stuck-on-day-9-closures-beginner-guidance-sought/27662/27666
 
+// First solution, one step at a time, using trailing closure syntax for the .filter function...
+let allNumbers = [7,4,38,21,16,15,12,33,31,49]
+// create a new array, leaving an item ($0) if it is NOT (!) a multiple of 2
+// we are calling the 'filter' function using trailing closure syntax
+let oddOnly = allNumbers.filter { !$0.isMultiple(of: 2) }
+// create another new array with numbers sorted (default sort)
+let sortedOdd = oddOnly.sorted()
+// create another array that puts the items into separate strings
+let stringifiedSorted = sortedOdd.map { "\($0) is a lucky number" }
+// print out the strings, one per line
+for number in stringifiedSorted {
+    print(number)
+}
+
+// And a compressed version, with multiple steps in one line of code...
+print("\nOne-line solution:")
+let answers = allNumbers.filter{!$0.isMultiple(of: 2)}.sorted().map{"\($0) is a lucky number"}
+for line in answers {
+    print(line)
 }
